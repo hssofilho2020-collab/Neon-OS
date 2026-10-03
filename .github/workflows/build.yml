@@ -1,36 +1,33 @@
-name: Build Neon JARVIS APK
+name: Build Neon-OS APK
 on:
   push:
-    branches: [ main ]
+    branches: [ principal, main ]
   workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          node-version: 20
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: Install
-        run: npm install
-      - name: Build Web
-        run: npm run build || npx vite build || echo "ok"
-      - name: Add Android
+          python-version: '3.10'
+
+      - name: Install dependencies
         run: |
-          npm i @capacitor/cli @capacitor/core
-          npx cap add android || true
-          npx cap sync android || true
-      - name: Build APK
+          sudo apt update
+          sudo apt install -y python3-pip openjdk-17-jdk zip unzip
+          pip install --upgrade pip
+          pip install buildozer cython==0.29.33
+
+      - name: Build APK with Buildozer
         run: |
-          cd android
-          chmod +x gradlew
-          ./gradlew assembleDebug
+          buildozer android debug
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: neon-jarvis-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: neon-os-apk
+          path: bin/*.apk
