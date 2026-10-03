@@ -1,7 +1,0 @@
-{
-  "whatsapp": {"pacote": "com.whatsapp", "comando": ["zap", "whatsapp", "mensagem"]},
-  "spotify": {"pacote": "com.spotify.music", "comando": ["toca", "musica", "spotify"]},
-  "gmail": {"pacote": "com.google.android.gm", "comando": ["email"]},
-  "instagram": {"pacote": "com.instagram.android", "comando": ["instagram", "insta"]},
-  "youtube": {"pacote": "com.google.android.youtube", "comando": ["youtube"]}
-}
