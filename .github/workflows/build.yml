@@ -1,4 +1,5 @@
 name: Build Neon-OS APK
+
 on:
   push:
     branches: [ principal, main ]
@@ -7,27 +8,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: kivy/buildozer:master
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      - name: Install dependencies
+      - name: Build APK
         run: |
-          sudo apt update
-          sudo apt install -y python3-pip openjdk-17-jdk zip unzip
-          pip install --upgrade pip
-          pip install buildozer cython==0.29.33
-
-      - name: Build APK with Buildozer
-        run: |
+          # limpa lixo
+          rm -rf .buildozer bin
           buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: neon-os-apk
+          name: neon-bixby-apk
           path: bin/*.apk
+          if-no-files-found: error
